@@ -87,6 +87,27 @@ void delete_massive (struct massive* inp)
 	massives_count --;
 	}
 
+void add_element_to_end (struct massive* inp, TYPE new_element)
+	{
+	while (inp -> datalen + 1 >= inp -> memlen) change_memsz (inp, inp -> memlen + MEM_STEP);
+	
+	inp -> data [inp -> datalen ++] = new_element;
+	}
+
+void remove_element_from_end (struct massive* inp)
+	{
+	inp -> datalen --;
+	}
+
+void change_element (struct massive* inp, int ind, TYPE new_element)
+	{
+	if (ind >= inp -> memlen)
+		printf ("Trying to rewrite unallocated memory - element %i. Max number %i. I'll drop that.'\n",
+			ind, inp -> datalen);
+	
+	else inp -> data [ind] = new_element;
+	}
+	
 int main ()
 	{
 	return 0;
