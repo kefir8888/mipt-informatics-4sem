@@ -107,7 +107,26 @@ void change_element (struct massive* inp, int ind, TYPE new_element)
 	
 	else inp -> data [ind] = new_element;
 	}
+
+void zero_massive (struct massive* inp)
+	{
+	int i = 0;
 	
+	for (; i < inp -> datalen; i ++) inp -> data [i] = 0;
+	
+	inp -> datalen = 0;
+	}
+
+int get_datalen (struct massive* inp)
+	{
+	return inp -> datalen;
+	}
+
+int get_memlen (struct massive* inp)
+	{
+	return inp -> memlen;
+	}
+
 int main ()
 	{
 	return 0;
