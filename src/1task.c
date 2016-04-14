@@ -37,6 +37,36 @@ void print_exit_message ()
 	else printf ("%s", NOT_OK_EXITING);
 	}
 
+struct massive
+	{
+	TYPE* data;
+	int memlen;
+	int datalen;
+	};
+
+void change_memsz (struct massive* inp, int newmemlen)
+	{
+	if (newmemlen > MAX_DATASZ)
+		{
+		fprintf (stderr, "Unable to allocate memory for %i elements, max count is %i.\n",
+					newmemlen, MAX_DATASZ);
+		
+		return;
+		}
+	
+	if (inp -> memlen == 0)
+		{
+		inp -> data = (TYPE*) malloc (sizeof (TYPE) * newmemlen);
+		inp -> memlen = newmemlen;
+		}
+	
+	else
+		{
+		inp -> data = (TYPE*) realloc (inp -> data, newmemlen);
+		inp -> memlen = newmemlen;
+		}
+	}
+
 int main ()
 	{
 	return 0;
