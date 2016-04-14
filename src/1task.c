@@ -139,6 +139,19 @@ void print_element (struct massive* inp, int ind)
 	printf ("%i", inp -> data [ind]);
 	}
 
+void print_massive (struct massive* inp)
+	{
+	int i = 0;
+	
+	for (; i < inp -> datalen; i ++)
+		{
+		print_element (inp, i);
+		printf (" ");
+		}
+	
+	printf ("\n");
+	}
+
 int main ()
 	{
 	return 0;
