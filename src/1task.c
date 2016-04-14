@@ -27,6 +27,16 @@ const int DEF_LEN    = 10;
 const int MEM_STEP   = 10;
 const int MAX_DATASZ = 100;
 
+int massives_count = 0;
+const char* OK_EXITING = "You've deleted all the massives.\n'";
+const char* NOT_OK_EXITING = "You've not deleted all the massives.\n'";
+
+void print_exit_message ()
+	{
+	if (massives_count == 0) printf ("%s", OK_EXITING);
+	else printf ("%s", NOT_OK_EXITING);
+	}
+
 int main ()
 	{
 	return 0;
