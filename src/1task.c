@@ -127,6 +127,18 @@ int get_memlen (struct massive* inp)
 	return inp -> memlen;
 	}
 
+void print_element (struct massive* inp, int ind)
+	{
+	if (ind >= inp -> datalen)
+		{
+		printf ("Trying to read not written info at index %i. Max ind %i.\n", ind, inp -> datalen);
+		
+		return;
+		}
+	
+	printf ("%i", inp -> data [ind]);
+	}
+
 int main ()
 	{
 	return 0;
