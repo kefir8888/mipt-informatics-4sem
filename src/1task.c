@@ -67,6 +67,26 @@ void change_memsz (struct massive* inp, int newmemlen)
 		}
 	}
 
+void init_massive (struct massive* inp)
+	{
+	inp -> data    = 0;
+	inp -> memlen  = 0;
+	inp -> datalen = 0;
+	
+	change_memsz (inp, DEF_LEN);
+	
+	massives_count ++;
+	}
+
+void delete_massive (struct massive* inp)
+	{
+	free (inp -> data);
+	inp -> datalen = 0;
+	inp -> memlen  = 0;
+	
+	massives_count --;
+	}
+
 int main ()
 	{
 	return 0;
