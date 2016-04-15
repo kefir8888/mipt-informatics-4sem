@@ -1,9 +1,9 @@
-#include "sdio.h"
+#include "stdio.h"
 #include "malloc.h"
 
 typedef int TYPE;
 
-//TODO enum to errors
+//TODO enum to errors DONE
 //TODO gitlog min 15
 //TODO coverage > 95 %
 //TODO valgrind
@@ -13,11 +13,21 @@ typedef int TYPE;
 
 const int DEF_LEN    = 10;
 const int MEM_STEP   = 10;
-const int MAX_DATASZ = 100;
+const int MAX_DATASZ = 300; //azaza
 
 int arrays_count = 0;
 const char* OK_EXITING = "You've deleted all the arrays.\n'";
 const char* NOT_OK_EXITING = "You've not deleted all the arrays.\n'";
+
+enum {UNABLE_TO_ALLOCATE_MEMORY,
+      ELEMENT_NOT_ADDED,
+      WRITE_TO_UNALLOCATED_MEMORY,
+      GARBAGE_READ};
+
+const char* ERRORS [] = {"Unable to allocate memory for %i elements, max count is %i.\n",
+			 "Element not added.\n",
+			 "Trying to write to unallocated memory - element %i. Max number is %i. I'll drop that.\n",
+			 "Trying to read garbage from not filled memory at index %i. Max ind %i.\n"};
 
 void print_exit_message ()
 	{
@@ -32,14 +42,13 @@ struct array
 	int datalen;
 	};
 
-void change_memsz (struct array* inp, int newmemlen)
+int change_memsz (struct array* inp, int newmemlen)
 	{
 	if (newmemlen > MAX_DATASZ)
 		{
-		fprintf (stderr, "Unable to allocate memory for %i elements, max count is %i.\n",
-					newmemlen, MAX_DATASZ);
+		fprintf (stderr, ERRORS [UNABLE_TO_ALLOCATE_MEMORY],newmemlen, MAX_DATASZ);
 		
-		return;
+		return 0;
 		}
 	
 	if (inp -> memlen == 0)
@@ -53,9 +62,11 @@ void change_memsz (struct array* inp, int newmemlen)
 		inp -> data = (TYPE*) realloc (inp -> data, newmemlen);
 		inp -> memlen = newmemlen;
 		}
+	
+	return 1;
 	}
 
-void init_massive (struct array* inp)
+void init_array (struct array* inp)
 	{
 	inp -> data    = 0;
 	inp -> memlen  = 0;
@@ -77,9 +88,15 @@ void delete_array (struct array* inp)
 
 void add_element_to_end (struct array* inp, TYPE new_element)
 	{
-	while (inp -> datalen + 1 >= inp -> memlen) change_memsz (inp, inp -> memlen + MEM_STEP);
+	int success = 1;
 	
-	inp -> data [inp -> datalen ++] = new_element;
+	if (inp -> datalen + 1 >= inp -> memlen)
+		{
+		success = change_memsz (inp, inp -> memlen + MEM_STEP);
+		}
+	
+	if (success == 1) inp -> data [inp -> datalen ++] = new_element;
+	else fprintf (stderr, ERRORS [ELEMENT_NOT_ADDED]);
 	}
 
 void remove_element_from_end (struct array* inp)
@@ -90,8 +107,7 @@ void remove_element_from_end (struct array* inp)
 void change_element (struct array* inp, int ind, TYPE new_element)
 	{
 	if (ind >= inp -> memlen)
-		printf ("Trying to rewrite unallocated memory - element %i. Max number %i. I'll drop that.'\n",
-			ind, inp -> datalen);
+		printf (ERRORS [WRITE_TO_UNALLOCATED_MEMORY],	ind, inp -> datalen);
 	
 	else inp -> data [ind] = new_element;
 	}
@@ -119,7 +135,7 @@ void print_element (struct array* inp, int ind)
 	{
 	if (ind >= inp -> datalen)
 		{
-		printf ("Trying to read not written info at index %i. Max ind %i.\n", ind, inp -> datalen);
+		printf (ERRORS [GARBAGE_READ], ind, inp -> datalen);
 		
 		return;
 		}
@@ -127,7 +143,7 @@ void print_element (struct array* inp, int ind)
 	printf ("%i", inp -> data [ind]);
 	}
 
-void print_massive (struct array* inp)
+void print_array (struct array* inp)
 	{
 	int i = 0;
 	
