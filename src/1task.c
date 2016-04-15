@@ -152,6 +152,16 @@ void print_massive (struct massive* inp)
 	printf ("\n");
 	}
 
+void verbose_full_print (struct massive* inp)
+	{
+	printf ("---------------------------------------------------------------\n");
+	printf ("Printing data about obj at %x: \nAllocated memory %i bytes (for %i elements), used %i b, %i el.\n",
+		/*(unsigned int)*/ inp, (inp -> memlen) * sizeof (TYPE), inp -> memlen, (inp -> datalen) * sizeof (TYPE), inp -> datalen);
+	printf ("Printing data in the masive:\n");
+	print_massive (inp);
+	//printf ("---------------------------------------------------------------\n");
+	}
+
 int main ()
 	{
 	return 0;
