@@ -3,13 +3,17 @@
 
 typedef int TYPE;
 
-//TODO enum to errors DONE
-//TODO gitlog min 15
-//TODO coverage > 95 %
-//TODO valgrind
-//TODO makefile
+//TODO enum to errors  DONE
+//TODO gitlog min 15   DONE
+//TODO coverage > 95 % DONE
+//gcc -fprofile-arcs -ftest-coverage -std=c99 1task.c -o 1task
+//./1task
+//gcov -b ./1task.c | tee output.txt
+//TODO valgrind        DONE
+// valgrind --leak-check=full --leak-resolution=med ./1task
+//TODO makefile                (?)
 //TODO unittests
-//TODO move massive to library
+//TODO move massive to library (?)
 
 const int DEF_LEN    = 10;
 const int MEM_STEP   = 10;
@@ -44,6 +48,8 @@ struct array
 
 int change_memsz (struct array* inp, int newmemlen)
 	{
+	printf ("started changing memsz\n");
+	
 	if (newmemlen > MAX_DATASZ)
 		{
 		fprintf (stderr, ERRORS [UNABLE_TO_ALLOCATE_MEMORY],newmemlen, MAX_DATASZ);
@@ -59,7 +65,8 @@ int change_memsz (struct array* inp, int newmemlen)
 	
 	else
 		{
-		inp -> data = (TYPE*) realloc (inp -> data, newmemlen);
+		printf ("reallocating with new mem len %i\n", newmemlen);
+		inp -> data = (TYPE*) realloc (inp -> data, newmemlen * sizeof (TYPE));
 		inp -> memlen = newmemlen;
 		}
 	
@@ -194,6 +201,9 @@ int main ()
 	zero_array   (&array1);
 	print_array (&array1);
 	printf ("datalen = %i, memlen = %i\n", get_datalen (&array1), get_memlen (&array1));
+	
+	for (int i = 0; i < MAX_DATASZ + 5; i ++)
+		add_element_to_end (&array2, 41);
 	
 	delete_array (&array1);
 	print_exit_message ();
