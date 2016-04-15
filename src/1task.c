@@ -181,6 +181,20 @@ int main ()
 	add_element_to_end (&massive1, 8);
 	add_element_to_end (&massive1, 13);
 	verbose_full_print (&massive1);
+	remove_element_from_end (&massive1);
+	print_massive (&massive1);
+	
+	change_element (&massive1, 3, 7);
+	print_massive (&massive1);
+	
+	zero_massive   (&massive1);
+	print_massive (&massive1);
+	printf ("datalen = %i, memlen = %i\n", get_datalen (&massive1), get_memlen (&massive1));
+	
+	delete_massive (&massive1);
+	print_exit_message ();
+	delete_massive (&massive2);
+	print_exit_message ();
 	
 	return 0;
 	}
