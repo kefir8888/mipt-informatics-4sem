@@ -11,40 +11,28 @@ typedef int TYPE;
 //TODO unittests
 //TODO move massive to library
 
-//#define TYPE   TYPE_INT
-//typedef int TYPE_INT;
-//typedef double TYPE_DOUBLE;
-
-//enum types
-//	{
-//	TYPE_INT,
-//	TYPE_DOUBLE
-//	};
-
-//const char* types_strings [2] = { "int", "double" };
-
 const int DEF_LEN    = 10;
 const int MEM_STEP   = 10;
 const int MAX_DATASZ = 100;
 
-int massives_count = 0;
-const char* OK_EXITING = "You've deleted all the massives.\n'";
-const char* NOT_OK_EXITING = "You've not deleted all the massives.\n'";
+int arrays_count = 0;
+const char* OK_EXITING = "You've deleted all the arrays.\n'";
+const char* NOT_OK_EXITING = "You've not deleted all the arrays.\n'";
 
 void print_exit_message ()
 	{
-	if (massives_count == 0) printf ("%s", OK_EXITING);
+	if (arrays_count == 0) printf ("%s", OK_EXITING);
 	else printf ("%s", NOT_OK_EXITING);
 	}
 
-struct massive
+struct array
 	{
 	TYPE* data;
 	int memlen;
 	int datalen;
 	};
 
-void change_memsz (struct massive* inp, int newmemlen)
+void change_memsz (struct array* inp, int newmemlen)
 	{
 	if (newmemlen > MAX_DATASZ)
 		{
@@ -67,7 +55,7 @@ void change_memsz (struct massive* inp, int newmemlen)
 		}
 	}
 
-void init_massive (struct massive* inp)
+void init_massive (struct array* inp)
 	{
 	inp -> data    = 0;
 	inp -> memlen  = 0;
@@ -75,31 +63,31 @@ void init_massive (struct massive* inp)
 	
 	change_memsz (inp, DEF_LEN);
 	
-	massives_count ++;
+	arrays_count ++;
 	}
 
-void delete_massive (struct massive* inp)
+void delete_array (struct array* inp)
 	{
 	free (inp -> data);
 	inp -> datalen = 0;
 	inp -> memlen  = 0;
 	
-	massives_count --;
+	arrays_count --;
 	}
 
-void add_element_to_end (struct massive* inp, TYPE new_element)
+void add_element_to_end (struct array* inp, TYPE new_element)
 	{
 	while (inp -> datalen + 1 >= inp -> memlen) change_memsz (inp, inp -> memlen + MEM_STEP);
 	
 	inp -> data [inp -> datalen ++] = new_element;
 	}
 
-void remove_element_from_end (struct massive* inp)
+void remove_element_from_end (struct array* inp)
 	{
 	inp -> datalen --;
 	}
 
-void change_element (struct massive* inp, int ind, TYPE new_element)
+void change_element (struct array* inp, int ind, TYPE new_element)
 	{
 	if (ind >= inp -> memlen)
 		printf ("Trying to rewrite unallocated memory - element %i. Max number %i. I'll drop that.'\n",
@@ -108,7 +96,7 @@ void change_element (struct massive* inp, int ind, TYPE new_element)
 	else inp -> data [ind] = new_element;
 	}
 
-void zero_massive (struct massive* inp)
+void zero_array (struct array* inp)
 	{
 	int i = 0;
 	
@@ -117,17 +105,17 @@ void zero_massive (struct massive* inp)
 	inp -> datalen = 0;
 	}
 
-int get_datalen (struct massive* inp)
+int get_datalen (struct array* inp)
 	{
 	return inp -> datalen;
 	}
 
-int get_memlen (struct massive* inp)
+int get_memlen (struct array* inp)
 	{
 	return inp -> memlen;
 	}
 
-void print_element (struct massive* inp, int ind)
+void print_element (struct array* inp, int ind)
 	{
 	if (ind >= inp -> datalen)
 		{
@@ -139,7 +127,7 @@ void print_element (struct massive* inp, int ind)
 	printf ("%i", inp -> data [ind]);
 	}
 
-void print_massive (struct massive* inp)
+void print_massive (struct array* inp)
 	{
 	int i = 0;
 	
@@ -152,48 +140,48 @@ void print_massive (struct massive* inp)
 	printf ("\n");
 	}
 
-void verbose_full_print (struct massive* inp)
+void verbose_full_print (struct array* inp)
 	{
 	printf ("---------------------------------------------------------------\n");
 	printf ("Printing data about obj at %x: \nAllocated memory %i bytes (for %i elements), used %i b, %i el.\n",
 		/*(unsigned int)*/ inp, (inp -> memlen) * sizeof (TYPE), inp -> memlen, (inp -> datalen) * sizeof (TYPE), inp -> datalen);
-	printf ("Printing data in the masive:\n");
-	print_massive (inp);
+	printf ("Printing data in the array:\n");
+	print_array (inp);
 	//printf ("---------------------------------------------------------------\n");
 	}
 
 int main ()
 	{
-	struct massive massive1;
-	struct massive massive2;
+	struct array array1;
+	struct array array2;
 	
-	init_massive (&massive1);
-	init_massive (&massive2);
+	init_array (&array1);
+	init_array (&array2);
 	
-	verbose_full_print (&massive1);
+	verbose_full_print (&array1);
 	
-	add_element_to_end (&massive1, 0);
-	add_element_to_end (&massive1, 1);
-	add_element_to_end (&massive1, 1);
-	add_element_to_end (&massive1, 2);
-	add_element_to_end (&massive1, 3);
-	add_element_to_end (&massive1, 5);
-	add_element_to_end (&massive1, 8);
-	add_element_to_end (&massive1, 13);
-	verbose_full_print (&massive1);
-	remove_element_from_end (&massive1);
-	print_massive (&massive1);
+	add_element_to_end (&array1, 0);
+	add_element_to_end (&array1, 1);
+	add_element_to_end (&array1, 1);
+	add_element_to_end (&array1, 2);
+	add_element_to_end (&array1, 3);
+	add_element_to_end (&array1, 5);
+	add_element_to_end (&array1, 8);
+	add_element_to_end (&array1, 13);
+	verbose_full_print (&array1);
+	remove_element_from_end (&array1);
+	print_array (&array1);
 	
-	change_element (&massive1, 3, 7);
-	print_massive (&massive1);
+	change_element (&array1, 3, 7);
+	print_array (&array1);
 	
-	zero_massive   (&massive1);
-	print_massive (&massive1);
-	printf ("datalen = %i, memlen = %i\n", get_datalen (&massive1), get_memlen (&massive1));
+	zero_array   (&array1);
+	print_array (&array1);
+	printf ("datalen = %i, memlen = %i\n", get_datalen (&array1), get_memlen (&array1));
 	
-	delete_massive (&massive1);
+	delete_array (&array1);
 	print_exit_message ();
-	delete_massive (&massive2);
+	delete_array (&array2);
 	print_exit_message ();
 	
 	return 0;
