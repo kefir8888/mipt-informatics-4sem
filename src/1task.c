@@ -164,5 +164,23 @@ void verbose_full_print (struct massive* inp)
 
 int main ()
 	{
+	struct massive massive1;
+	struct massive massive2;
+	
+	init_massive (&massive1);
+	init_massive (&massive2);
+	
+	verbose_full_print (&massive1);
+	
+	add_element_to_end (&massive1, 0);
+	add_element_to_end (&massive1, 1);
+	add_element_to_end (&massive1, 1);
+	add_element_to_end (&massive1, 2);
+	add_element_to_end (&massive1, 3);
+	add_element_to_end (&massive1, 5);
+	add_element_to_end (&massive1, 8);
+	add_element_to_end (&massive1, 13);
+	verbose_full_print (&massive1);
+	
 	return 0;
 	}
