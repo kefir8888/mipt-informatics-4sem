@@ -1,0 +1,2 @@
+all:
+	gcc -fprofile-arcs -ftest-coverage -std=c99 1task.c array.h array.h -o 1task
