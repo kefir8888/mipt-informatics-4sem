@@ -3,6 +3,8 @@
 #include "assert.h"
 #include "array.h"
 
+#define check(COND) { if (COND) { } else { fprintf (stderr, "Condition '%s' is false!\n", #COND); assert (0); } }
+
 //TODO enum to errors  DONE
 //TODO gitlog min 15   DONE
 //TODO coverage > 95 % DONE
@@ -46,9 +48,15 @@ struct array
 	int datalen;
 	};
 
+int pointer_valid (struct array* inp)
+	{
+	if (inp != 0) return 1;
+	else return 0;
+	}
+
 int change_memsz (struct array* inp, int newmemlen)
 	{
-	//printf ("started changing memsz\n");
+	check (pointer_valid (inp))
 	
 	if (newmemlen > MAX_DATASZ)
 		{
@@ -75,6 +83,8 @@ int change_memsz (struct array* inp, int newmemlen)
 
 int init_array (struct array* inp)
 	{
+	check (pointer_valid (inp))
+	
 	inp -> data    = 0;
 	inp -> memlen  = 0;
 	inp -> datalen = 0;
@@ -88,6 +98,8 @@ int init_array (struct array* inp)
 
 int delete_array (struct array* inp)
 	{
+	check (pointer_valid (inp))
+	
 	free (inp -> data);
 	inp -> datalen = 0;
 	inp -> memlen  = 0;
@@ -99,6 +111,8 @@ int delete_array (struct array* inp)
 
 int add_element_to_end (struct array* inp, TYPE new_element)
 	{
+	check (pointer_valid (inp))
+	
 	int success = 1;
 	
 	if (inp -> datalen + 1 >= inp -> memlen)
@@ -114,6 +128,8 @@ int add_element_to_end (struct array* inp, TYPE new_element)
 
 int remove_element_from_end (struct array* inp)
 	{
+	check (pointer_valid (inp))
+	
 	inp -> datalen --;
 	
 	return 1;
@@ -121,6 +137,8 @@ int remove_element_from_end (struct array* inp)
 
 int change_element (struct array* inp, int ind, TYPE new_element)
 	{
+	check (pointer_valid (inp))
+	
 	if (ind >= inp -> memlen)
 		{
 		printf (ERRORS [WRITE_TO_UNALLOCATED_MEMORY],	ind, inp -> datalen);
@@ -135,6 +153,8 @@ int change_element (struct array* inp, int ind, TYPE new_element)
 
 int zero_array (struct array* inp)
 	{
+	check (pointer_valid (inp))
+	
 	int i = 0;
 	for (; i < inp -> datalen; i ++) inp -> data [i] = 0;
 	inp -> datalen = 0;
@@ -144,6 +164,8 @@ int zero_array (struct array* inp)
 
 int bubble_sort (struct array* inp)
 	{
+	check (pointer_valid (inp))
+	
 	for (int i = inp -> datalen; i > 0; i --)
 		{
 		for (int j = 0; j < i - 1; j ++)
@@ -167,16 +189,22 @@ int bubble_sort (struct array* inp)
 
 int get_datalen (struct array* inp)
 	{
+	check (pointer_valid (inp))
+	
 	return inp -> datalen;
 	}
 
 int get_memlen (struct array* inp)
 	{
+	check (pointer_valid (inp))
+	
 	return inp -> memlen;
 	}
 
 int print_element (struct array* inp, int ind)
 	{
+	check (pointer_valid (inp))
+	
 	if (ind >= inp -> datalen)
 		{
 		printf (ERRORS [GARBAGE_READ], ind, inp -> datalen);
@@ -191,6 +219,8 @@ int print_element (struct array* inp, int ind)
 
 int print_array (struct array* inp)
 	{
+	check (pointer_valid (inp))
+	
 	int i = 0;
 	
 	for (; i < inp -> datalen; i ++)
@@ -206,6 +236,8 @@ int print_array (struct array* inp)
 
 int verbose_full_print (struct array* inp)
 	{
+	check (pointer_valid (inp))
+	
 	printf ("---------------------------------------------------------------\n");
 	printf ("Printing data about obj at %x: \nAllocated memory %i bytes (for %i elements), used %i b, %i el.\n",
 		/*(unsigned int)*/ inp, (inp -> memlen) * sizeof (TYPE), inp -> memlen, (inp -> datalen) * sizeof (TYPE), inp -> datalen);

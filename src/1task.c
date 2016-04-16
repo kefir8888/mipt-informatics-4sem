@@ -1,7 +1,5 @@
 #include "array.c"
 
-#define check(COND) { if (COND) { } else { fprintf (stderr, "Condition '%s' is false!\n", #COND); assert (0); } }
-
 int main ()
 	{
 	struct array array1;
