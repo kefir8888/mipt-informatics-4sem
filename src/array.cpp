@@ -1,9 +1,10 @@
 #include "stdio.h"
 #include "malloc.h"
 #include "assert.h"
-//#include "array.h"
 
 #define check(COND) { if (COND) { } else { fprintf (stderr, "Condition '%s' is false!\n", #COND); assert (0); } }
+
+typedef int TYPE;
 
 //TODO enum to errors  DONE
 //TODO gitlog min 15   DONE
