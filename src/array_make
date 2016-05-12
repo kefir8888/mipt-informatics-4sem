@@ -1,2 +1,2 @@
 all:
-	gcc -fprofile-arcs -ftest-coverage -std=c99 1task.c array.h array.h -o 1task
+	g++ -fprofile-arcs -ftest-coverage -std=c++11 2task.cpp array.cpp array.h -o 2task
