@@ -52,49 +52,44 @@ class array
 	
 	 array () {}
 	~array () {}
-	};
 
-int change_memsz (struct array* inp, int newmemlen)
-	{
-	check (pointer_valid (inp))
-	
-	if (newmemlen > MAX_DATASZ)
+	int change_memsz (int newmemlen)
 		{
-		fprintf (stderr, ERRORS [UNABLE_TO_ALLOCATE_MEMORY],newmemlen, MAX_DATASZ);
+		if (newmemlen > MAX_DATASZ)
+			{
+			fprintf (stderr, ERRORS [UNABLE_TO_ALLOCATE_MEMORY], newmemlen, MAX_DATASZ);
 		
-		return 0;
-		}
+			return 0;
+			}
 	
-	if (inp -> memlen == 0)
-		{
-		inp -> data = (TYPE*) malloc (sizeof (TYPE) * newmemlen);
-		inp -> memlen = newmemlen;
-		}
+		if (memlen == 0)
+			{
+			data = (TYPE*) malloc (sizeof (TYPE) * newmemlen);
+			memlen = newmemlen;
+			}
 	
-	else
-		{
-		printf ("reallocating with new mem len %i\n", newmemlen);
-		inp -> data = (TYPE*) realloc (inp -> data, newmemlen * sizeof (TYPE));
-		inp -> memlen = newmemlen;
-		}
+		else
+			{
+			printf ("reallocating with new mem len %i\n", newmemlen);
+			data = (TYPE*) realloc (data, newmemlen * sizeof (TYPE));
+			memlen = newmemlen;
+			}
 	
-	return 1;
-	}
+		return 1;
+		}
 
-int init_array (struct array* inp)
-	{
-	check (pointer_valid (inp))
-	
-	inp -> data    = 0;
-	inp -> memlen  = 0;
-	inp -> datalen = 0;
-	
-	int suc = change_memsz (inp, DEF_LEN);
-	
-	arrays_count ++;
-	
-	return suc;
-	}
+	int init_array ()
+		{
+		data    = 0;
+		memlen  = 0;
+		datalen = 0;
+		
+		int suc = change_memsz (DEF_LEN);
+		
+		arrays_count ++;
+		
+		return suc;
+		}
 
 int delete_array (struct array* inp)
 	{
@@ -246,3 +241,4 @@ int verbose_full_print (struct array* inp)
 	
 	return 1;
 	}
+};
