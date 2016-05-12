@@ -6,24 +6,16 @@
 
 typedef int TYPE;
 
-//TODO enum to errors  DONE
-//TODO gitlog min 15   DONE
-//TODO coverage > 95 % DONE
-//gcc -fprofile-arcs -ftest-coverage -std=c99 1task.c -o 1task
-//./1task
-//gcov -b ./1task.c | tee output.txt
-//TODO valgrind        DONE
-// valgrind --leak-check=full --leak-resolution=med ./1task
-//TODO makefile                (?)
-//TODO unittests       DONE
-//TODO move massive to library (?)
+//TODO: 2-level inheritance
+//TODO: vector usage (WTF?)
+//TODO: reloaded virtual functions
 
 const int DEF_LEN    = 10;
 const int MEM_STEP   = 10;
 const int MAX_DATASZ = 301; //azaza
 
 int arrays_count = 0;
-const char* OK_EXITING = "You've deleted all the arrays.\n";
+const char* OK_EXITING     = "You've deleted all the arrays.\n";
 const char* NOT_OK_EXITING = "You've not deleted all the arrays.\n'";
 
 enum {UNABLE_TO_ALLOCATE_MEMORY,
@@ -42,18 +34,25 @@ void print_exit_message ()
 	else printf ("%s", NOT_OK_EXITING);
 	}
 
-struct array
-	{
-	TYPE* data;
-	int memlen;
-	int datalen;
-	};
-
 int pointer_valid (struct array* inp)
 	{
 	if (inp != 0) return 1;
 	else return 0;
 	}
+
+class array
+	{
+	private:
+	
+	TYPE* data;
+	int memlen;
+	int datalen;
+	
+	public:
+	
+	 array () {}
+	~array () {}
+	};
 
 int change_memsz (struct array* inp, int newmemlen)
 	{
