@@ -1,4 +1,4 @@
-#include "array.c"
+#include "array.cpp"
 
 int main ()
 	{
