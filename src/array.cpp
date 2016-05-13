@@ -34,7 +34,7 @@ void print_exit_message ()
 	else printf ("%s", NOT_OK_EXITING);
 	}
 
-int pointer_valid (struct array* inp)
+int pointer_valid (void* inp)
 	{
 	if (inp != 0) return 1;
 	else return 0;
@@ -55,21 +55,39 @@ class array
 
 	int change_memsz (int newmemlen)
 		{
+		try
+  			{
+    			if (newmemlen > MAX_DATASZ) throw UNABLE_TO_ALLOCATE_MEMORY;
+  			}
+  		
+  		catch (int errnum)
+  			{
+    			fprintf (stderr, ERRORS [errnum], newmemlen, MAX_DATASZ);
+			
+			return 0;
+			}
+		
+		/*
 		if (newmemlen > MAX_DATASZ)
 			{
 			fprintf (stderr, ERRORS [UNABLE_TO_ALLOCATE_MEMORY], newmemlen, MAX_DATASZ);
 		
 			return 0;
 			}
-	
+		*/
+		
 		if (memlen == 0)
 			{
+			check (!pointer_valid (data))
+			
 			data = (TYPE*) malloc (sizeof (TYPE) * newmemlen);
 			memlen = newmemlen;
 			}
 	
 		else
 			{
+			check (pointer_valid (data))
+			
 			printf ("reallocating with new mem len %i\n", newmemlen);
 			data = (TYPE*) realloc (data, newmemlen * sizeof (TYPE));
 			memlen = newmemlen;
@@ -98,7 +116,9 @@ class array
 		memlen  = 0;
 	
 		arrays_count --;
-	
+		
+		delete this;
+		
 		return 1;
 		}
 
@@ -175,48 +195,46 @@ class array
 		return datalen;
 		}
 
-int get_memlen (struct array* inp)
-	{
-	return inp -> memlen;
-	}
-
-int print_element (int ind)
-	{
-	if (ind >= inp -> datalen)
+	int get_memlen ()
 		{
-		printf (ERRORS [GARBAGE_READ], ind, inp -> datalen);
+		return memlen;
+		}
+
+	int print_element (int ind)
+		{
+		if (ind >= datalen)
+			{
+			printf (ERRORS [GARBAGE_READ], ind, datalen);
 		
-		return 0;
+			return 0;
+			}
+	
+		printf ("%i", data [ind]);
+	
+		return 1;
 		}
-	
-	printf ("%i", inp -> data [ind]);
-	
-	return 1;
-	}
 
-int print_array ()
-	{
-	int i = 0;
-	
-	for (; i < datalen; i ++)
+	int print_array ()
 		{
-		print_element (i);
-		printf (" ");
+		for (int i = 0; i < datalen; i ++)
+			{
+			print_element (i);
+			printf (" ");
+			}
+	
+		printf ("\n");
+	
+		return 1;
 		}
-	
-	printf ("\n");
-	
-	return 1;
-	}
 
-int verbose_full_print ()
-	{
-	printf ("---------------------------------------------------------------\n");
-	printf ("Printing data about obj at %x: \nAllocated memory %i bytes (for %i elements), used %i b, %i el.\n",
-		this, (memlen) * sizeof (TYPE), memlen, (datalen) * sizeof (TYPE), datalen);
-	printf ("Printing data in the array:\n");
-	print_array ();
+	int verbose_full_print ()
+		{
+		printf ("---------------------------------------------------------------\n");
+		printf ("Printing data about obj at %x: \nAllocated memory %i bytes (for %i elements), used %i b, %i el.\n",
+			this, (memlen) * sizeof (TYPE), memlen, (datalen) * sizeof (TYPE), datalen);
+		printf ("Printing data in the array:\n");
+		print_array ();
 	
-	return 1;
-	}
-};
+		return 1;
+		}
+	};
