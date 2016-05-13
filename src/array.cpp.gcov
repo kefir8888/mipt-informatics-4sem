@@ -1,0 +1,381 @@
+        -:    0:Source:array.cpp
+        -:    0:Graph:./2task.gcno
+        -:    0:Data:./2task.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:#include "stdio.h"
+        -:    2:#include "malloc.h"
+        -:    3:#include "assert.h"
+        -:    4:
+        -:    5:#define check(COND) { if (COND) { } else { fprintf (stderr, "Condition '%s' is false!\n", #COND); assert (0); } }
+        -:    6:
+        -:    7:typedef int TYPE;
+        -:    8:
+        -:    9://TODO enum to errors  DONE
+        -:   10://TODO gitlog min 15   DONE
+        -:   11://TODO coverage > 95 % DONE
+        -:   12://gcc -fprofile-arcs -ftest-coverage -std=c99 1task.c -o 1task
+        -:   13://./1task
+        -:   14://gcov -b ./1task.c | tee output.txt
+        -:   15://TODO valgrind        DONE
+        -:   16:// valgrind --leak-check=full --leak-resolution=med ./1task
+        -:   17://TODO makefile                (?)
+        -:   18://TODO unittests       DONE
+        -:   19://TODO move massive to library (?)
+        -:   20:
+        -:   21:const int DEF_LEN    = 10;
+        -:   22:const int MEM_STEP   = 10;
+        -:   23:const int MAX_DATASZ = 301; //azaza
+        -:   24:
+        -:   25:int arrays_count = 0;
+        -:   26:const char* OK_EXITING = "You've deleted all the arrays.\n";
+        -:   27:const char* NOT_OK_EXITING = "You've not deleted all the arrays.\n'";
+        -:   28:
+        -:   29:enum {UNABLE_TO_ALLOCATE_MEMORY,
+        -:   30:      ELEMENT_NOT_ADDED,
+        -:   31:      WRITE_TO_UNALLOCATED_MEMORY,
+        -:   32:      GARBAGE_READ};
+        -:   33:
+        -:   34:const char* ERRORS [] = {"Unable to allocate memory for %i elements, max count is %i.\n",
+        -:   35:			 "Element not added.\n",
+        -:   36:			 "Trying to write to unallocated memory - element %i. Max number is %i. I'll drop that.\n",
+        -:   37:			 "Trying to read garbage from not filled memory at index %i. Max ind %i.\n"};
+        -:   38:
+function _Z18print_exit_messagev called 2 returned 100% blocks executed 100%
+        2:   39:void print_exit_message ()
+        -:   40:	{
+        2:   41:	if (arrays_count == 0) printf ("%s", OK_EXITING);
+переход  0 выполнен 50% (fallthrough)
+переход  1 выполнен 50%
+вызов    2 вернул 100%
+        1:   42:	else printf ("%s", NOT_OK_EXITING);
+вызов    0 вернул 100%
+        2:   43:	}
+        -:   44:
+        -:   45:struct array
+        -:   46:	{
+        -:   47:	TYPE* data;
+        -:   48:	int memlen;
+        -:   49:	int datalen;
+        -:   50:	};
+        -:   51:
+function _Z13pointer_validP5array called 399 returned 100% blocks executed 75%
+      399:   52:int pointer_valid (struct array* inp)
+        -:   53:	{
+      399:   54:	if (inp != 0) return 1;
+переход  0 выполнен 100% (fallthrough)
+переход  1 выполнен 0%
+    #####:   55:	else return 0;
+        -:   56:	}
+        -:   57:
+function _Z12change_memszP5arrayi called 38 returned 100% blocks executed 85%
+       38:   58:int change_memsz (struct array* inp, int newmemlen)
+        -:   59:	{
+       38:   60:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:   61:	
+       38:   62:	if (newmemlen > MAX_DATASZ)
+переход  0 выполнен 18% (fallthrough)
+переход  1 выполнен 82%
+        -:   63:		{
+        7:   64:		fprintf (stderr, ERRORS [UNABLE_TO_ALLOCATE_MEMORY],newmemlen, MAX_DATASZ);
+вызов    0 вернул 100%
+        -:   65:		
+        7:   66:		return 0;
+        -:   67:		}
+        -:   68:	
+       31:   69:	if (inp -> memlen == 0)
+переход  0 выполнен 6% (fallthrough)
+переход  1 выполнен 94%
+        -:   70:		{
+        2:   71:		inp -> data = (TYPE*) malloc (sizeof (TYPE) * newmemlen);
+        2:   72:		inp -> memlen = newmemlen;
+        -:   73:		}
+        -:   74:	
+        -:   75:	else
+        -:   76:		{
+       29:   77:		printf ("reallocating with new mem len %i\n", newmemlen);
+вызов    0 вернул 100%
+       29:   78:		inp -> data = (TYPE*) realloc (inp -> data, newmemlen * sizeof (TYPE));
+       29:   79:		inp -> memlen = newmemlen;
+        -:   80:		}
+        -:   81:	
+       31:   82:	return 1;
+        -:   83:	}
+        -:   84:
+function _Z10init_arrayP5array called 2 returned 100% blocks executed 71%
+        2:   85:int init_array (struct array* inp)
+        -:   86:	{
+        2:   87:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:   88:	
+        2:   89:	inp -> data    = 0;
+        2:   90:	inp -> memlen  = 0;
+        2:   91:	inp -> datalen = 0;
+        -:   92:	
+        2:   93:	int suc = change_memsz (inp, DEF_LEN);
+вызов    0 вернул 100%
+        -:   94:	
+        2:   95:	arrays_count ++;
+        -:   96:	
+        2:   97:	return suc;
+        -:   98:	}
+        -:   99:
+function _Z12delete_arrayP5array called 2 returned 100% blocks executed 67%
+        2:  100:int delete_array (struct array* inp)
+        -:  101:	{
+        2:  102:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:  103:	
+        2:  104:	free (inp -> data);
+        2:  105:	inp -> datalen = 0;
+        2:  106:	inp -> memlen  = 0;
+        -:  107:	
+        2:  108:	arrays_count --;
+        -:  109:	
+        2:  110:	return 1;
+        -:  111:	}
+        -:  112:
+function _Z18add_element_to_endP5arrayi called 314 returned 100% blocks executed 83%
+      314:  113:int add_element_to_end (struct array* inp, TYPE new_element)
+        -:  114:	{
+      314:  115:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:  116:	
+      314:  117:	int success = 1;
+        -:  118:	
+      314:  119:	if (inp -> datalen + 1 >= inp -> memlen)
+переход  0 выполнен 11% (fallthrough)
+переход  1 выполнен 89%
+        -:  120:		{
+       36:  121:		success = change_memsz (inp, inp -> memlen + MEM_STEP);
+вызов    0 вернул 100%
+        -:  122:		}
+        -:  123:	
+      314:  124:	if (success == 1) inp -> data [inp -> datalen ++] = new_element;
+переход  0 выполнен 98% (fallthrough)
+переход  1 выполнен 2%
+        7:  125:	else fprintf (stderr, ERRORS [ELEMENT_NOT_ADDED]);
+вызов    0 вернул 100%
+        -:  126:	
+      314:  127:	return success;
+        -:  128:	}
+        -:  129:
+function _Z23remove_element_from_endP5array called 1 returned 100% blocks executed 67%
+        1:  130:int remove_element_from_end (struct array* inp)
+        -:  131:	{
+        1:  132:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:  133:	
+        1:  134:	inp -> datalen --;
+        -:  135:	
+        1:  136:	return 1;
+        -:  137:	}
+        -:  138:
+function _Z14change_elementP5arrayii called 1 returned 100% blocks executed 56%
+        1:  139:int change_element (struct array* inp, int ind, TYPE new_element)
+        -:  140:	{
+        1:  141:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:  142:	
+        1:  143:	if (ind >= inp -> memlen)
+переход  0 выполнен 0% (fallthrough)
+переход  1 выполнен 100%
+        -:  144:		{
+    #####:  145:		printf (ERRORS [WRITE_TO_UNALLOCATED_MEMORY],	ind, inp -> datalen);
+вызов   0 ни разу не исполнялся
+    #####:  146:		return 0;
+        -:  147:		}
+        -:  148:		
+        -:  149:	else 	{
+        1:  150:		inp -> data [ind] = new_element;
+        1:  151:		return 1;
+        -:  152:		}
+        -:  153:	}
+        -:  154:
+function _Z10zero_arrayP5array called 1 returned 100% blocks executed 78%
+        1:  155:int zero_array (struct array* inp)
+        -:  156:	{
+        1:  157:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:  158:	
+        1:  159:	int i = 0;
+        8:  160:	for (; i < inp -> datalen; i ++) inp -> data [i] = 0;
+переход  0 выполнен 88% (fallthrough)
+переход  1 выполнен 13%
+        1:  161:	inp -> datalen = 0;
+        -:  162:	
+        1:  163:	return 1;
+        -:  164:	}
+        -:  165:
+function _Z11bubble_sortP5array called 1 returned 100% blocks executed 84%
+        1:  166:int bubble_sort (struct array* inp)
+        -:  167:	{
+        1:  168:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:  169:	
+        8:  170:	for (int i = inp -> datalen; i > 0; i --)
+переход  0 выполнен 88% (fallthrough)
+переход  1 выполнен 13%
+        -:  171:		{
+       28:  172:		for (int j = 0; j < i - 1; j ++)
+переход  0 выполнен 75% (fallthrough)
+переход  1 выполнен 25%
+        -:  173:			{
+       21:  174:			if (inp -> data [j] < inp -> data [j + 1])
+переход  0 выполнен 52% (fallthrough)
+переход  1 выполнен 48%
+        -:  175:				{
+       11:  176:				TYPE temp = inp -> data [j];
+       11:  177:				inp -> data [j] = inp -> data [j + 1];
+       11:  178:				inp -> data [j + 1] = temp;
+        -:  179:				}
+        -:  180:			}
+        -:  181:		}
+        -:  182:	
+        1:  183:	int success = 1;
+        -:  184:	
+        7:  185:	for (int i = 0; i < inp -> datalen - 1; i ++)
+переход  0 выполнен 86% (fallthrough)
+переход  1 выполнен 14%
+        6:  186:		if (inp -> data [i] < inp -> data [i + 1]) success = 0;
+переход  0 выполнен 0% (fallthrough)
+переход  1 выполнен 100%
+        -:  187:		
+        1:  188:	return success;
+        -:  189:	}
+        -:  190:
+function _Z11get_datalenP5array called 1 returned 100% blocks executed 67%
+        1:  191:int get_datalen (struct array* inp)
+        -:  192:	{
+        1:  193:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:  194:	
+        1:  195:	return inp -> datalen;
+        -:  196:	}
+        -:  197:
+function _Z10get_memlenP5array called 1 returned 100% blocks executed 67%
+        1:  198:int get_memlen (struct array* inp)
+        -:  199:	{
+        1:  200:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:  201:	
+        1:  202:	return inp -> memlen;
+        -:  203:	}
+        -:  204:
+function _Z13print_elementP5arrayi called 29 returned 100% blocks executed 60%
+       29:  205:int print_element (struct array* inp, int ind)
+        -:  206:	{
+       29:  207:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:  208:	
+       29:  209:	if (ind >= inp -> datalen)
+переход  0 выполнен 0% (fallthrough)
+переход  1 выполнен 100%
+        -:  210:		{
+    #####:  211:		printf (ERRORS [GARBAGE_READ], ind, inp -> datalen);
+вызов   0 ни разу не исполнялся
+        -:  212:		
+    #####:  213:		return 0;
+        -:  214:		}
+        -:  215:	
+       29:  216:	printf ("%i", inp -> data [ind]);
+вызов    0 вернул 100%
+        -:  217:	
+       29:  218:	return 1;
+        -:  219:	}
+        -:  220:
+function _Z11print_arrayP5array called 6 returned 100% blocks executed 83%
+        6:  221:int print_array (struct array* inp)
+        -:  222:	{
+        6:  223:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:  224:	
+        6:  225:	int i = 0;
+        -:  226:	
+       64:  227:	for (; i < inp -> datalen; i ++)
+переход  0 выполнен 83% (fallthrough)
+переход  1 выполнен 17%
+        -:  228:		{
+       29:  229:		print_element (inp, i);
+вызов    0 вернул 100%
+       29:  230:		printf (" ");
+вызов    0 вернул 100%
+        -:  231:		}
+        -:  232:	
+        6:  233:	printf ("\n");
+вызов    0 вернул 100%
+        -:  234:	
+        6:  235:	return 1;
+        -:  236:	}
+        -:  237:
+function _Z18verbose_full_printP5array called 2 returned 100% blocks executed 80%
+        2:  238:int verbose_full_print (struct array* inp)
+        -:  239:	{
+        2:  240:	check (pointer_valid (inp))
+вызов    0 вернул 100%
+переход  1 выполнен 0% (fallthrough)
+переход  2 выполнен 100%
+вызов   3 ни разу не исполнялся
+вызов   4 ни разу не исполнялся
+        -:  241:	
+        2:  242:	printf ("---------------------------------------------------------------\n");
+вызов    0 вернул 100%
+        6:  243:	printf ("Printing data about obj at %x: \nAllocated memory %i bytes (for %i elements), used %i b, %i el.\n",
+        6:  244:		/*(unsigned int)*/ inp, (inp -> memlen) * sizeof (TYPE), inp -> memlen, (inp -> datalen) * sizeof (TYPE), inp -> datalen);
+вызов    0 вернул 100%
+        2:  245:	printf ("Printing data in the array:\n");
+вызов    0 вернул 100%
+        2:  246:	print_array (inp);
+вызов    0 вернул 100%
+        -:  247:	
+        2:  248:	return 1;
+        -:  249:	}

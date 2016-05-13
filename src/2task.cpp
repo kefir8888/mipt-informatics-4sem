@@ -5,39 +5,39 @@ int main ()
 	struct array array1;
 	struct array array2;
 	
-	check (init_array (&array1))
-	check (init_array (&array2))
+	check (array1.init_array ())
+	check (array2.init_array ())
 	
-	check (verbose_full_print (&array1))
+	check (array1.verbose_full_print ())
 	
-	check (add_element_to_end (&array1, 5))
-	check (add_element_to_end (&array1, 1))
-	check (add_element_to_end (&array1, 8))
-	check (add_element_to_end (&array1, 41))
-	check (add_element_to_end (&array1, 3))
-	check (add_element_to_end (&array1, 3))
-	check (add_element_to_end (&array1, 8))
-	check (add_element_to_end (&array1, 13))
-	check (verbose_full_print (&array1))
-	check (remove_element_from_end (&array1))
-	check (print_array (&array1))
+	check (array1.add_element_to_end (5))
+	check (array1.add_element_to_end (1))
+	check (array1.add_element_to_end (8))
+	check (array1.add_element_to_end (41))
+	check (array1.add_element_to_end (3))
+	check (array1.add_element_to_end (3))
+	check (array1.add_element_to_end (8))
+	check (array1.add_element_to_end (13))
+	check (array1.verbose_full_print ())
+	check (array1.remove_element_from_end ())
+	check (array1.print_array ())
 	
-	check (bubble_sort (&array1))
-	check (print_array (&array1))
+	check (array1.bubble_sort ())
+	check (array1.print_array ())
 	
-	check (change_element (&array1, 3, 7))
-	check (print_array (&array1))
+	check (array1.change_element (3, 7))
+	check (array1.print_array    ())
 	
-	check (zero_array   (&array1))
-	check (print_array (&array1))
-	printf ("datalen = %i, memlen = %i\n", get_datalen (&array1), get_memlen (&array1));
+	check (array1.zero_array  ())
+	check (array1.print_array ())
+	printf ("datalen = %i, memlen = %i\n", array1.get_datalen (), array1.get_memlen ());
 	
 	for (int i = 0; i < MAX_DATASZ + 5; i ++)
-		/*check (*/add_element_to_end (&array2, 41);//)
+		array1.add_element_to_end (41);
 	
-	check (delete_array (&array1))
+	check (array1.delete_array ())
 	print_exit_message ();
-	check (delete_array (&array2))
+	check (array2.delete_array ())
 	print_exit_message ();
 	
 	return 0;

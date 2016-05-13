@@ -170,24 +170,18 @@ class array
 		return success;
 		}
 
-	int get_datalen (struct array* inp)
+	int get_datalen ()
 		{
-		check (pointer_valid (inp))
-	
-		return inp -> datalen;
+		return datalen;
 		}
 
 int get_memlen (struct array* inp)
 	{
-	check (pointer_valid (inp))
-	
 	return inp -> memlen;
 	}
 
-int print_element (struct array* inp, int ind)
+int print_element (int ind)
 	{
-	check (pointer_valid (inp))
-	
 	if (ind >= inp -> datalen)
 		{
 		printf (ERRORS [GARBAGE_READ], ind, inp -> datalen);
@@ -200,15 +194,13 @@ int print_element (struct array* inp, int ind)
 	return 1;
 	}
 
-int print_array (struct array* inp)
+int print_array ()
 	{
-	check (pointer_valid (inp))
-	
 	int i = 0;
 	
-	for (; i < inp -> datalen; i ++)
+	for (; i < datalen; i ++)
 		{
-		print_element (inp, i);
+		print_element (i);
 		printf (" ");
 		}
 	
@@ -217,15 +209,13 @@ int print_array (struct array* inp)
 	return 1;
 	}
 
-int verbose_full_print (struct array* inp)
+int verbose_full_print ()
 	{
-	check (pointer_valid (inp))
-	
 	printf ("---------------------------------------------------------------\n");
 	printf ("Printing data about obj at %x: \nAllocated memory %i bytes (for %i elements), used %i b, %i el.\n",
-		/*(unsigned int)*/ inp, (inp -> memlen) * sizeof (TYPE), inp -> memlen, (inp -> datalen) * sizeof (TYPE), inp -> datalen);
+		this, (memlen) * sizeof (TYPE), memlen, (datalen) * sizeof (TYPE), datalen);
 	printf ("Printing data in the array:\n");
-	print_array (inp);
+	print_array ();
 	
 	return 1;
 	}
