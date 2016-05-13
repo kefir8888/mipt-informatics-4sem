@@ -138,48 +138,44 @@ class array
 			}
 		}
 
-int zero_array (struct array* inp)
-	{
-	check (pointer_valid (inp))
-	
-	int i = 0;
-	for (; i < inp -> datalen; i ++) inp -> data [i] = 0;
-	inp -> datalen = 0;
-	
-	return 1;
-	}
-
-int bubble_sort (struct array* inp)
-	{
-	check (pointer_valid (inp))
-	
-	for (int i = inp -> datalen; i > 0; i --)
+	int zero_array ()
 		{
-		for (int j = 0; j < i - 1; j ++)
+		int i = 0;
+		for (; i < datalen; i ++) data [i] = 0;
+		datalen = 0;
+	
+		return 1;
+		}
+
+	int bubble_sort ()
+		{
+		for (int i = datalen; i > 0; i --)
 			{
-			if (inp -> data [j] < inp -> data [j + 1])
+			for (int j = 0; j < i - 1; j ++)
 				{
-				TYPE temp = inp -> data [j];
-				inp -> data [j] = inp -> data [j + 1];
-				inp -> data [j + 1] = temp;
+				if (data [j] < data [j + 1])
+					{
+					TYPE temp    = data [j];
+					data [j]     = data [j + 1];
+					data [j + 1] = temp;
+					}
 				}
 			}
-		}
 	
-	int success = 1;
+		int success = 1;
 	
-	for (int i = 0; i < inp -> datalen - 1; i ++)
-		if (inp -> data [i] < inp -> data [i + 1]) success = 0;
+		for (int i = 0; i < datalen - 1; i ++)
+			if (data [i] < data [i + 1]) success = 0;
 		
-	return success;
-	}
+		return success;
+		}
 
-int get_datalen (struct array* inp)
-	{
-	check (pointer_valid (inp))
+	int get_datalen (struct array* inp)
+		{
+		check (pointer_valid (inp))
 	
-	return inp -> datalen;
-	}
+		return inp -> datalen;
+		}
 
 int get_memlen (struct array* inp)
 	{
