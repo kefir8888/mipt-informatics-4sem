@@ -91,60 +91,52 @@ class array
 		return suc;
 		}
 
-int delete_array (struct array* inp)
-	{
-	check (pointer_valid (inp))
-	
-	free (inp -> data);
-	inp -> datalen = 0;
-	inp -> memlen  = 0;
-	
-	arrays_count --;
-	
-	return 1;
-	}
-
-int add_element_to_end (struct array* inp, TYPE new_element)
-	{
-	check (pointer_valid (inp))
-	
-	int success = 1;
-	
-	if (inp -> datalen + 1 >= inp -> memlen)
+	int delete_array ()
 		{
-		success = change_memsz (inp, inp -> memlen + MEM_STEP);
-		}
+		free (data);
+		datalen = 0;
+		memlen  = 0;
 	
-	if (success == 1) inp -> data [inp -> datalen ++] = new_element;
-	else fprintf (stderr, ERRORS [ELEMENT_NOT_ADDED]);
+		arrays_count --;
 	
-	return success;
-	}
-
-int remove_element_from_end (struct array* inp)
-	{
-	check (pointer_valid (inp))
-	
-	inp -> datalen --;
-	
-	return 1;
-	}
-
-int change_element (struct array* inp, int ind, TYPE new_element)
-	{
-	check (pointer_valid (inp))
-	
-	if (ind >= inp -> memlen)
-		{
-		printf (ERRORS [WRITE_TO_UNALLOCATED_MEMORY],	ind, inp -> datalen);
-		return 0;
-		}
-		
-	else 	{
-		inp -> data [ind] = new_element;
 		return 1;
 		}
-	}
+
+	int add_element_to_end (TYPE new_element)
+		{
+		int success = 1;
+	
+		if (datalen + 1 >= memlen)
+			{
+			success = change_memsz (memlen + MEM_STEP);
+			}
+	
+		if (success == 1) data [datalen ++] = new_element;
+		else fprintf (stderr, ERRORS [ELEMENT_NOT_ADDED]);
+	
+		return success;
+		}
+
+	int remove_element_from_end ()
+		{
+		datalen --;
+	
+		return 1;
+		}
+
+	int change_element (int ind, TYPE new_element)
+		{
+		if (ind >= memlen)
+			{
+			printf (ERRORS [WRITE_TO_UNALLOCATED_MEMORY], ind, datalen);
+			return 0;
+			}
+		
+		else 	{
+			data [ind] = new_element;
+			return 1;
+			}
+		}
 
 int zero_array (struct array* inp)
 	{
