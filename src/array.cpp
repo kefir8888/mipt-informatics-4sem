@@ -62,6 +62,40 @@ class data_structure
 		}
 		
 	virtual int add_element (TYPE new_element) { }
+	
+	int change_memsz (int newmemlen)
+		{
+		try
+  			{
+    			if (newmemlen > MAX_DATASZ) throw UNABLE_TO_ALLOCATE_MEMORY;
+  			}
+  		
+  		catch (int errnum)
+  			{
+    			fprintf (stderr, ERRORS [errnum], newmemlen, MAX_DATASZ);
+			
+			return 1;
+			}
+		
+		if (memlen == 0)
+			{
+			check (!pointer_valid (data))
+			
+			data = (TYPE*) malloc (sizeof (TYPE) * newmemlen);
+			memlen = newmemlen;
+			}
+	
+		else
+			{
+			check (pointer_valid (data))
+			
+			printf ("reallocating with new mem len %i\n", newmemlen);
+			data = (TYPE*) realloc (data, newmemlen * sizeof (TYPE));
+			memlen = newmemlen;
+			}
+	
+		return 1;
+		}
 	};
 
 class array: public data_structure

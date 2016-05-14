@@ -24,8 +24,11 @@ int main ()
 	check (array1 -> print_array ())
 	
 	sorted_array* sarr = new sorted_array ();
+	sarr -> init_array ();
 	sarr -> add_element (5);
-	check (sarr -> search (5) == 0, "Incorrect search function!\n")
+	check (sarr -> search (5) == 0)
+	sarr -> delete_array ();
+	delete sarr;
 	
 	check (array1 -> bubble_sort ())
 	check (array1 -> print_array ())
