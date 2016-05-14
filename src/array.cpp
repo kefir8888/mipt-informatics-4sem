@@ -205,3 +205,16 @@ class array: public data_structure
 		}
 	};
 
+class sorted_array: public array
+	{
+	public:
+	
+	 sorted_array (): array () { }
+	~sorted_array () { }
+	
+	int add_element (TYPE new_element)
+		{
+		add_element_to_end (new_element)
+		bubble_sort        ();
+		}
+	};
