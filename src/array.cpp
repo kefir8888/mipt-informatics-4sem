@@ -51,7 +51,7 @@ class data_structure
 	 data_structure () { }
 	~data_structure () { }
 	
-	
+	virtual int add_element (TYPE new_element) { }
 	};
 
 class array: public data_structure
@@ -87,7 +87,10 @@ class array: public data_structure
 		return 1;
 		}
 	
-	
+	int add_element (TYPE new_element)
+		{
+		return add_element_to_end (new_element);
+		}
 	
 	int add_element_to_end (TYPE new_element)
 		{
@@ -218,3 +221,6 @@ class sorted_array: public array
 		bubble_sort        ();
 		}
 	};
+	
+	
+		
