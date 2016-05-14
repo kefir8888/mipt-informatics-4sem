@@ -6,10 +6,6 @@
 
 typedef int TYPE;
 
-//TODO: 2-level inheritance
-//TODO: vector usage (WTF?)
-//TODO: reloaded virtual functions
-
 const int DEF_LEN    = 10;
 const int MEM_STEP   = 50;
 const int MAX_DATASZ = 301; //azaza
@@ -160,18 +156,6 @@ class array: public data_structure
 
 	int change_element (int ind, TYPE new_element)
 		{
-		try
-  			{
-    			if (ind >= memlen) throw WRITE_TO_UNALLOCATED_MEMORY;
-  			}
-  		
-  		catch (int errnum)
-  			{
-    			fprintf (stderr, ERRORS [errnum], ind, datalen);
-			
-			return 0;
-			}
-		
 		data [ind] = new_element;
 		return 1;
 		}
@@ -210,18 +194,6 @@ class array: public data_structure
 
 	int print_element (int ind)
 		{
-		try
-  			{
-    			if (ind >= datalen) throw GARBAGE_READ;
-  			}
-  		
-  		catch (int errnum)
-  			{
-    			fprintf (stderr, ERRORS [errnum], ind, datalen);
-			
-			return 0;
-			}
-		
 		printf ("%i", data [ind]);
 	
 		return 1;
@@ -261,7 +233,7 @@ class sorted_array: public array
 	
 	int add_element (TYPE new_element)
 		{
-		add_element_to_end (new_element)
+		add_element_to_end (new_element);
 		bubble_sort        ();
 		}
 	

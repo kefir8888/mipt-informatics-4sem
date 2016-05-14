@@ -14,7 +14,7 @@ int main ()
 	check (array1 -> add_element_to_end (1))
 	check (array1 -> add_element_to_end (8))
 	check (array1 -> add_element_to_end (41))
-	check (array2 -> change_memsz (1000))
+	//check (array2 -> change_memsz (1000))
 	check (array1 -> add_element_to_end (3))
 	check (array1 -> add_element_to_end (3))
 	check (array1 -> add_element_to_end (8))
@@ -26,7 +26,8 @@ int main ()
 	sorted_array* sarr = new sorted_array ();
 	sarr -> init_array ();
 	sarr -> add_element (5);
-	check (sarr -> search (5) == 0)
+	check (sarr -> search (5) == 1)
+	//printf ("search result is %i\n", sarr -> search (5));
 	sarr -> delete_array ();
 	delete sarr;
 	
