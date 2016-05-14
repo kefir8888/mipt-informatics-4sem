@@ -11,7 +11,7 @@ typedef int TYPE;
 //TODO: reloaded virtual functions
 
 const int DEF_LEN    = 10;
-const int MEM_STEP   = 10;
+const int MEM_STEP   = 50;
 const int MAX_DATASZ = 301; //azaza
 
 int arrays_count = 0;
@@ -40,61 +40,28 @@ int pointer_valid (void* inp)
 	else return 0;
 	}
 
-class array
+class data_structure
 	{
-	private:
+	public:
 	
 	TYPE* data;
 	int memlen;
 	int datalen;
 	
+	 data_structure () { }
+	~data_structure () { }
+	
+	
+	};
+
+class array: public data_structure
+	{
+	private:
+	
 	public:
 	
-	 array () {}
+	 array (): data_structure () {}
 	~array () {}
-
-	int change_memsz (int newmemlen)
-		{
-		try
-  			{
-    			if (newmemlen > MAX_DATASZ) throw UNABLE_TO_ALLOCATE_MEMORY;
-  			}
-  		
-  		catch (int errnum)
-  			{
-    			fprintf (stderr, ERRORS [errnum], newmemlen, MAX_DATASZ);
-			
-			return 0;
-			}
-		
-		/*
-		if (newmemlen > MAX_DATASZ)
-			{
-			fprintf (stderr, ERRORS [UNABLE_TO_ALLOCATE_MEMORY], newmemlen, MAX_DATASZ);
-		
-			return 0;
-			}
-		*/
-		
-		if (memlen == 0)
-			{
-			check (!pointer_valid (data))
-			
-			data = (TYPE*) malloc (sizeof (TYPE) * newmemlen);
-			memlen = newmemlen;
-			}
-	
-		else
-			{
-			check (pointer_valid (data))
-			
-			printf ("reallocating with new mem len %i\n", newmemlen);
-			data = (TYPE*) realloc (data, newmemlen * sizeof (TYPE));
-			memlen = newmemlen;
-			}
-	
-		return 1;
-		}
 
 	int init_array ()
 		{
@@ -117,11 +84,11 @@ class array
 	
 		arrays_count --;
 		
-		delete this;
-		
 		return 1;
 		}
-
+	
+	
+	
 	int add_element_to_end (TYPE new_element)
 		{
 		int success = 1;
@@ -146,16 +113,20 @@ class array
 
 	int change_element (int ind, TYPE new_element)
 		{
-		if (ind >= memlen)
-			{
-			printf (ERRORS [WRITE_TO_UNALLOCATED_MEMORY], ind, datalen);
+		try
+  			{
+    			if (ind >= memlen) throw WRITE_TO_UNALLOCATED_MEMORY;
+  			}
+  		
+  		catch (int errnum)
+  			{
+    			fprintf (stderr, ERRORS [errnum], ind, datalen);
+			
 			return 0;
 			}
 		
-		else 	{
-			data [ind] = new_element;
-			return 1;
-			}
+		data [ind] = new_element;
+		return 1;
 		}
 
 	int zero_array ()
@@ -190,25 +161,20 @@ class array
 		return success;
 		}
 
-	int get_datalen ()
-		{
-		return datalen;
-		}
-
-	int get_memlen ()
-		{
-		return memlen;
-		}
-
 	int print_element (int ind)
 		{
-		if (ind >= datalen)
-			{
-			printf (ERRORS [GARBAGE_READ], ind, datalen);
-		
+		try
+  			{
+    			if (ind >= datalen) throw GARBAGE_READ;
+  			}
+  		
+  		catch (int errnum)
+  			{
+    			fprintf (stderr, ERRORS [errnum], ind, datalen);
+			
 			return 0;
 			}
-	
+		
 		printf ("%i", data [ind]);
 	
 		return 1;
@@ -238,3 +204,4 @@ class array
 		return 1;
 		}
 	};
+
