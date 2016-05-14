@@ -23,6 +23,10 @@ int main ()
 	check (array1 -> remove_element_from_end ())
 	check (array1 -> print_array ())
 	
+	sorted_array* sarr = new sorted_array ();
+	sarr -> add_element (5);
+	check (sarr -> search (5) == 0, "Incorrect search function!\n")
+	
 	check (array1 -> bubble_sort ())
 	check (array1 -> print_array ())
 	

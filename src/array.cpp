@@ -230,7 +230,13 @@ class sorted_array: public array
 		add_element_to_end (new_element)
 		bubble_sort        ();
 		}
-	};
 	
-	
+	int search (TYPE val)
+		{
+		int ind = -1;
 		
+		for (int i = 0; i < datalen; i ++)
+			if (data [i] == val)
+				ind = i;
+		}
+	};
