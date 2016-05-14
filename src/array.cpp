@@ -51,6 +51,16 @@ class data_structure
 	 data_structure () { }
 	~data_structure () { }
 	
+	int get_datalen ()
+		{
+		return datalen;
+		}
+
+	int get_memlen ()
+		{
+		return memlen;
+		}
+		
 	virtual int add_element (TYPE new_element) { }
 	};
 
