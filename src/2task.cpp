@@ -2,8 +2,8 @@
 
 int main ()
 	{
-	array* array1 = new array ();
-	array* array2 = new array ();
+	array <int>* array1 = new array <int> ();
+	array <int>* array2 = new array <int> ();
 	
 	check (array1 -> init_array ())
 	check (array2 -> init_array ())
@@ -23,7 +23,7 @@ int main ()
 	check (array1 -> remove_element_from_end ())
 	check (array1 -> print_array ())
 	
-	sorted_array* sarr = new sorted_array ();
+	sorted_array <int>* sarr = new sorted_array <int> ();
 	sarr -> init_array ();
 	sarr -> add_element (5);
 	check (sarr -> search (5) == 1)
