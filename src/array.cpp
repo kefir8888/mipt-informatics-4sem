@@ -16,7 +16,7 @@ template <class TYPE> class data_structure
 	 data_structure () { }
 	~data_structure () { }
 	
-	int get_datalen ()
+	virtual int get_datalen ()
 		{
 		return datalen;
 		}
@@ -60,6 +60,47 @@ template <class TYPE> class data_structure
 			memlen = newmemlen;
 			}
 	
+		return 1;
+		}
+	};
+
+template <class TYPE> class alternative_array: public data_structure <int>
+	{
+	private:
+	
+	std::vector<TYPE> vec;
+	
+	public:
+	
+	 alternative_array (): data_structure () {}
+	~alternative_array () {}
+
+	int init_array ()
+		{	
+		arrays_count ++;
+		
+		return 1;
+		}
+
+	int delete_array ()
+		{
+		return 1;
+		}
+	
+	int get_datalen ()
+		{
+		vec.size ();
+		}
+	
+	int add_element (TYPE new_element)
+		{
+		return vec.push_back (new_element);
+		}
+
+	int remove_element_from_end ()
+		{
+		vec.pop_back ();
+		
 		return 1;
 		}
 	};

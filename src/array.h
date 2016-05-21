@@ -3,6 +3,7 @@
 #include "assert.h"
 #include <iostream>
 #include <exception>
+#include <vector>
 
 using namespace std;
 
