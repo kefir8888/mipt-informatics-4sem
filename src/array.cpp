@@ -1,51 +1,9 @@
-#include "stdio.h"
-#include "malloc.h"
-#include "assert.h"
-#include <iostream>
-#include <exception>
-
-using namespace std;
+#include "array.h"
 
 class memexc         : public exception { const char * what () const throw () { return "Unable to allocate requested memory.\n"; } };
 class addexc         : public exception { const char * what () const throw () { return "Element not added.\n"; } };
 class unallocmemexc  : public exception { const char * what () const throw () { return "Trying to write to unallocated memory.\n"; } };
 class garbagereadexc : public exception { const char * what () const throw () { return "Trying to read garbage from not filled memory.\n"; } };
-
-#define check(COND) { if (COND) { } else { fprintf (stderr, "Condition '%s' is false!\n", #COND); assert (0); } }
-
-//typedef int TYPE;
-
-const int DEF_LEN    = 10;
-const int MEM_STEP   = 50;
-const int MAX_DATASZ = 301; //azaza
-
-int arrays_count = 0;
-const char* OK_EXITING     = "You've deleted all the arrays.\n";
-const char* NOT_OK_EXITING = "You've not deleted all the arrays.\n'";
-
-/*
-enum {UNABLE_TO_ALLOCATE_MEMORY,
-      ELEMENT_NOT_ADDED,
-      WRITE_TO_UNALLOCATED_MEMORY,
-      GARBAGE_READ};
-
-const char* ERRORS [] = {"",
-			 "",
-			 "",
-			 ""};
-*/
-
-void print_exit_message ()
-	{
-	if (arrays_count == 0) printf ("%s", OK_EXITING);
-	else printf ("%s", NOT_OK_EXITING);
-	}
-
-int pointer_valid (void* inp)
-	{
-	if (inp != 0) return 1;
-	else return 0;
-	}
 
 template <class TYPE> class data_structure
 	{
@@ -105,9 +63,6 @@ template <class TYPE> class data_structure
 		return 1;
 		}
 	};
-
-
-//template <class T> class sorted_dicks: public dicks<T>
 
 template <class TYPE> class array: public data_structure <int>
 	{
@@ -238,7 +193,7 @@ template <class TYPE> class array: public data_structure <int>
 		return 1;
 		}
 	};
-//template <class T> class sorted_dicks: public dicks<T>
+
 template <class TYPE> class sorted_array: public array <int>
 	{
 	public:

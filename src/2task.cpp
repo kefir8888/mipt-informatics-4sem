@@ -27,7 +27,7 @@ int main ()
 	sarr -> init_array ();
 	sarr -> add_element (5);
 	check (sarr -> search (5) == 1)
-	//printf ("search result is %i\n", sarr -> search (5));
+	printf ("search result is %i\n", sarr -> search (5));
 	sarr -> delete_array ();
 	delete sarr;
 	
