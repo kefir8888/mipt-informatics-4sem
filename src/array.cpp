@@ -30,19 +30,8 @@ template <class TYPE> class data_structure
 	
 	int change_memsz (TYPE newmemlen)
 		{
-		/*try
-  			{
-    			if (newmemlen > MAX_DATASZ) //throw UNABLE_TO_ALLOCATE_MEMORY;
-    			throw memexc ();
-  			}
+		if (newmemlen > MAX_DATASZ) throw memexc ();
   		
-  		catch (int errnum)
-  			{
-    			fprintf (stderr, ERRORS [errnum], newmemlen, MAX_DATASZ);
-			
-			return 1;
-			}
-		*/
 		if (memlen == 0)
 			{
 			check (!pointer_valid (data))
@@ -89,12 +78,12 @@ template <class TYPE> class alternative_array: public data_structure <int>
 	
 	int get_datalen ()
 		{
-		vec.size ();
+		return vec.size ();
 		}
 	
 	int add_element (TYPE new_element)
 		{
-		return vec.push_back (new_element);
+		vec.push_back (new_element);
 		}
 
 	int remove_element_from_end ()
@@ -102,6 +91,11 @@ template <class TYPE> class alternative_array: public data_structure <int>
 		vec.pop_back ();
 		
 		return 1;
+		}
+	
+	TYPE operator[] (int num)
+		{
+		return vec [num];
 		}
 	};
 
@@ -153,8 +147,8 @@ template <class TYPE> class array: public data_structure <int>
 			}
 	
 		if (success == 1) data [datalen ++] = new_element;
-		//else fprintf (stderr, ERRORS [ELEMENT_NOT_ADDED]);
-	
+		else throw addexc ();
+		
 		return success;
 		}
 
@@ -257,3 +251,19 @@ template <class TYPE> class sorted_array: public array <int>
 				ind = i;
 		}
 	};
+
+//template <class TYPE> class alternative_array: public data_structure <int>
+/*
+template <class TYPE> class arrays_array: public data_structure <class alternative_array <TYPE> >
+	{
+	public:
+	
+	 arrays_array () { }; 
+	~arrays_array () { };
+	
+	void print_lalala ()
+		{
+		printf ("lalala!\n");
+		}
+	};
+*/

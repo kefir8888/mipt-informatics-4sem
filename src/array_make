@@ -1,2 +1,9 @@
 all:
 	g++ -fprofile-arcs -ftest-coverage -std=c++11 2task.cpp -o 2task
+	valgrind --leak-check=full --leak-resolution=med ./2task
+	gcov -b ./2task.cpp | tee output.txt
+	
+clean:
+	rm -rf *.gcno
+	rm -rf *.gcov
+	rm -rf *.gcda
